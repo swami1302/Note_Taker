@@ -1,0 +1,29 @@
+// Prisma 7 schema using the new `prisma-client` generator + Neon driver adapter.
+// Docs: https://www.prisma.io/docs/orm/prisma-schema/overview/generators
+
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  runtime             = "nodejs"
+  moduleFormat        = "cjs"
+  importFileExtension = ""
+}
+
+datasource db {
+  // In Prisma 7 the connection is configured via the driver adapter (runtime)
+  // and prisma.config.ts (CLI) — no `url` here.
+  provider = "postgresql"
+}
+
+model Note {
+  id        String   @id @default(cuid())
+  title     String   @default("Untitled")
+  content   Json // BlockNote document (array of blocks)
+  locked    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime? // null = active, set = soft-deleted (in trash)
+
+  @@index([updatedAt])
+  @@index([deletedAt])
+}
