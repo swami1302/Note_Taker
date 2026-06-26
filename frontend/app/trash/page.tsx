@@ -187,12 +187,12 @@ export default function TrashPage() {
                 {selecting ? (
                   <>
                     <X className="size-4" />
-                    Cancel
+                    <span className="hidden sm:inline">Cancel</span>
                   </>
                 ) : (
                   <>
                     <CheckSquare className="size-4" />
-                    Select
+                    <span className="hidden sm:inline">Select</span>
                   </>
                 )}
               </Button>
@@ -203,7 +203,9 @@ export default function TrashPage() {
                 disabled={emptyTrash.isPending}
               >
                 <Trash2 className="size-4" />
-                {emptyTrash.isPending ? "Emptying…" : "Empty trash"}
+                <span className="hidden sm:inline">
+                  {emptyTrash.isPending ? "Emptying…" : "Empty trash"}
+                </span>
               </Button>
             </>
           )}
@@ -325,9 +327,10 @@ export default function TrashPage() {
                         size="sm"
                         onClick={() => handleRestore(note.id)}
                         disabled={restoreNote.isPending}
+                        title="Restore note"
                       >
                         <RotateCcw className="size-3.5" />
-                        Restore
+                        <span className="hidden sm:inline">Restore</span>
                       </Button>
                       <Button
                         variant="ghost"
@@ -337,9 +340,10 @@ export default function TrashPage() {
                           handlePermanentDelete(note.id, note.title)
                         }
                         disabled={permanentDelete.isPending}
+                        title="Delete permanently"
                       >
                         <Trash2 className="size-3.5" />
-                        Delete
+                        <span className="hidden sm:inline">Delete</span>
                       </Button>
                     </div>
                   </Card>

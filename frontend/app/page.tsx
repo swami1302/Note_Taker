@@ -186,7 +186,7 @@ export default function HomePage() {
             className={buttonVariants({ variant: "ghost", size: "sm" })}
           >
             <Trash2 className="size-4" />
-            Trash
+            <span className="hidden sm:inline">Trash</span>
             {trashCount > 0 && (
               <Badge variant="secondary" className="ml-1">
                 {trashCount}
@@ -202,19 +202,19 @@ export default function HomePage() {
               {selecting ? (
                 <>
                   <X className="size-4" />
-                  Cancel
+                  <span className="hidden sm:inline">Cancel</span>
                 </>
               ) : (
                 <>
                   <CheckSquare className="size-4" />
-                  Select
+                  <span className="hidden sm:inline">Select</span>
                 </>
               )}
             </Button>
           )}
-          <Link href="/editor/new" className={buttonVariants()}>
+          <Link href="/editor/new" className={buttonVariants({ size: "sm" })}>
             <Plus className="size-4" />
-            New note
+            <span className="hidden sm:inline">New note</span>
           </Link>
         </div>
       </header>

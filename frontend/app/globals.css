@@ -103,7 +103,7 @@ body {
   }
 
   .note-body {
-    @apply -mx-[54px];
+    @apply -mx-2 md:-mx-[54px];
     margin-top: 2rem;
   }
 }
