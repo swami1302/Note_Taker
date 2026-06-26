@@ -76,6 +76,10 @@ export const notesApi = {
     const { data } = await http.post(`/notes/${id}/lock`, input);
     return noteSchema.parse(data);
   },
+  unlock: async (id: string): Promise<Note> => {
+    const { data } = await http.post(`/notes/${id}/unlock`);
+    return noteSchema.parse(data);
+  },
 
   // ── Trash / soft-delete ──
   softDelete: async (id: string): Promise<Note> => {

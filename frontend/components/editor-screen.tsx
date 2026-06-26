@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { NoteBlock } from "@/lib/api";
-import { useCreateNote, useLockNote, useNote, useSoftDeleteNote, useUpdateNote } from "@/lib/notes";
+import { useCreateNote, useLockNote, useNote, useSoftDeleteNote, useUpdateNote, useUnlockNote } from "@/lib/notes";
 import { useConfirmStore } from "@/stores/confirm-store";
 import { ThemeToggle } from "@/components/theme-toggle";
 
@@ -28,6 +28,7 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
   const createNote = useCreateNote();
   const updateNote = useUpdateNote(noteId ?? "");
   const lockNote = useLockNote(noteId ?? "");
+  const unlockNote = useUnlockNote(noteId ?? "");
   const softDelete = useSoftDeleteNote();
   const confirm = useConfirmStore((s) => s.confirm);
 
@@ -83,6 +84,22 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
     });
   }
 
+  async function handleUnlock() {
+    confirm({
+      title: "Unlock this note?",
+      description: "Unlocking this note will allow edits to be saved again.",
+      confirmText: "Unlock",
+      onConfirm: async () => {
+        try {
+          await unlockNote.mutateAsync();
+          toast.success("Note unlocked");
+        } catch (err) {
+          toast.error((err as Error).message);
+        }
+      },
+    });
+  }
+
 
 
   // ---- Loading / error states (existing notes) ----
@@ -124,6 +141,15 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
           </Badge>
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUnlock}
+              disabled={unlockNote.isPending}
+              className="border-emerald-300 bg-emerald-50 text-emerald-800 hover:bg-emerald-100 hover:text-emerald-900 dark:border-emerald-800/40 dark:bg-emerald-950/20 dark:text-emerald-400 dark:hover:bg-emerald-900/30"
+            >
+              {unlockNote.isPending ? "Unlocking…" : "Unlock"}
+            </Button>
             <Button onClick={goHome} variant="ghost">
               <ArrowLeft className="size-4" />
               Back

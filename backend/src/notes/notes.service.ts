@@ -94,6 +94,15 @@ export class NotesService implements OnModuleInit {
     });
   }
 
+  /** Unlock a note. */
+  async unlock(id: string) {
+    await this.findOne(id);
+    return this.prisma.note.update({
+      where: { id },
+      data: { locked: false },
+    });
+  }
+
   // ─── Trash / soft-delete ───────────────────────────────────────
 
   /** List trashed notes (lightweight, same fields as findAll + deletedAt). */

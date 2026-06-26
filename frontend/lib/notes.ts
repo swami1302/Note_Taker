@@ -57,6 +57,17 @@ export function useLockNote(id: string) {
   });
 }
 
+export function useUnlockNote(id: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: () => notesApi.unlock(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: noteKeys.all });
+      qc.invalidateQueries({ queryKey: noteKeys.detail(id) });
+    },
+  });
+}
+
 // ─── Trash / soft-delete ─────────────────────────────────────────
 
 export function useTrash() {

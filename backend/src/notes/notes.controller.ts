@@ -65,6 +65,11 @@ export class NotesController {
     return this.notes.lock(id, dto);
   }
 
+  @Post(':id/unlock')
+  unlock(@Param('id') id: string) {
+    return this.notes.unlock(id);
+  }
+
   @Delete(':id')
   softDelete(@Param('id') id: string) {
     return this.notes.softDelete(id);
