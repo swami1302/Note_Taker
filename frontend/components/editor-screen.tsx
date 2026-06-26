@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ArrowLeft, Lock, Trash2 } from "lucide-react";
+import { ArrowLeft, Lock } from "lucide-react";
 import { toast } from "sonner";
 import type { Block } from "@blocknote/core";
 import { Button } from "@/components/ui/button";
@@ -83,24 +83,7 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
     });
   }
 
-  function handleDelete() {
-    if (isNew) return;
-    confirm({
-      title: "Move to trash?",
-      description:
-        "This note will be moved to trash. You can restore it within 30 days.",
-      confirmText: "Move to trash",
-      onConfirm: async () => {
-        try {
-          await softDelete.mutateAsync(noteId!);
-          toast.success("Note moved to trash");
-          goHome();
-        } catch (err) {
-          toast.error((err as Error).message);
-        }
-      },
-    });
-  }
+
 
   // ---- Loading / error states (existing notes) ----
   if (!isNew && isLoading) {
@@ -141,15 +124,6 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
           </Badge>
           <div className="flex items-center gap-2">
             <ThemeToggle />
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={handleDelete}
-            >
-              <Trash2 className="size-4" />
-              Trash
-            </Button>
             <Button onClick={goHome} variant="ghost">
               <ArrowLeft className="size-4" />
               Back
@@ -180,18 +154,6 @@ export default function EditorScreen({ noteId }: { noteId?: string }) {
             <ArrowLeft className="size-4" />
             Cancel
           </Button>
-          {!isNew && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={handleDelete}
-              disabled={saving}
-            >
-              <Trash2 className="size-4" />
-              Trash
-            </Button>
-          )}
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
